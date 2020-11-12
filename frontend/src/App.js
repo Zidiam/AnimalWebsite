@@ -1,163 +1,91 @@
-import React, { Component } from "react";
-import Modal from "./components/Modal";
-import axios from "axios";
+import React from "react";
+import AnimalAdding from "./AnimalList/AnimalAdding.js";
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      viewExtinct: false,
-      activeItem: {
-        name: "",
-        species: "",
-        age: "",
-        colors: "",
-        extinct: false
-      },
-      animalList: []
-    };
-  }
-  componentDidMount() {
-    this.refreshList();
-  }
-  refreshList = () => {
-    axios
-      .get("http://localhost:8000/api/animals/")
-      .then(res => this.setState({ animalList: res.data }))
-      .catch(err => console.log(err));
-  };
-  displayExtinct = status => {
-    if (status) {
-      return this.setState({ viewExtinct: true });
-    }
-    return this.setState({ viewExtinct: false });
-  };
-  renderTabList = () => {
-    return (
-      <div className="my-5 tab-list">
-        <span
-          onClick={() => this.displayExtinct(true)}
-          className={this.state.viewExtinct ? "active" : ""}
-        >
-          Extinct
-        </span>
-        <span
-          onClick={() => this.displayExtinct(false)}
-          className={this.state.viewExtinct ? "" : "active"}
-        >
-          Not Extinct
-        </span>
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
+import ReactDOM from "react-dom";
+
+export default function App() {
+  return (
+    <Router>
+      <div>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/topics">Topics</Link>
+          </li>
+        </ul>
+
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/topics">
+            <Topics />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
       </div>
-    );
-  };
-  renderItems = () => {
-    const { viewExtinct } = this.state;
-    const newItems = this.state.animalList.filter(
-      item => item.extinct === viewExtinct
-    );
-    return newItems.map(item => (
-      <li
-        key={item.id}
-        className="list-group-item d-flex justify-content-between align-items-center"
-      >
-        <span
-          className={`todo-title mr-2 ${
-            this.state.viewExtinct ? "extinct-animal" : ""
-          }`}
-          name={item.species}
-        >
-          {item.name}
-        </span>
-        <span>
-          <button
-            onClick={() => this.editItem(item)}
-            className="btn btn-secondary mr-2"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => this.handleDelete(item)}
-            className="btn btn-danger mr-2"
-          >
-            Delete
-          </button>
-          <button
-            onClick={() => this.toggleItem(item)}
-            className="btn btn-success"
-          >
-            Switch
-          </button>
-        </span>
-      </li>
-    ));
-  };
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
-  };
-  handleSubmit = item => {
-    this.toggle();
-    if (item.id) {
-      axios
-        .put(`http://localhost:8000/api/animals/${item.id}/`, item)
-        .then(res => this.refreshList());
-      return;
-    }
-    axios
-      .post("http://localhost:8000/api/animals/", item)
-      .then(res => this.refreshList());
-  };
-  handleDelete = item => {
-    axios
-      .delete(`http://localhost:8000/api/animals/${item.id}/`)
-      .then(res => this.refreshList());
-  };
-  createItem = () => {
-    const item = { name: "", species: "", age: "", colors: "", extinct: false };
-    this.setState({ activeItem: item, modal: !this.state.modal });
-  };
-  editItem = item => {
-    this.setState({ activeItem: item, modal: !this.state.modal });
-  };
-  toggleItem = item => {
-    this.toggle();
-    item.extinct = !item.extinct
-    if (item.id) {
-      this.setState({ modal: false });
-      axios
-        .put(`http://localhost:8000/api/animals/${item.id}/`, item)
-      return;
-    }
-    axios
-        .then(res => this.refreshList());
-  };
-  render() {
-    return (
-      <main className="content">
-        <h1 className="text-white text-uppercase text-center my-4">Animal app</h1>
-        <div className="row ">
-          <div className="col-md-6 col-sm-10 mx-auto p-0">
-            <div className="card p-3">
-              <div className="">
-                <button onClick={this.createItem} className="btn btn-primary">
-                  Add Animal
-                </button>
-              </div>
-              {this.renderTabList()}
-              <ul className="list-group list-group-flush">
-                {this.renderItems()}
-              </ul>
-            </div>
-          </div>
-        </div>
-        {this.state.modal ? (
-          <Modal
-            activeItem={this.state.activeItem}
-            toggle={this.toggle}
-            onSave={this.handleSubmit}
-          />
-        ) : null}
-      </main>
-    );
-  }
+    </Router>
+  );
 }
-export default App;
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <AnimalAdding/>;
+}
+
+function Topics() {
+  let match = useRouteMatch();
+
+  return (
+    <div>
+      <h2>Topics</h2>
+
+      <ul>
+        <li>
+          <Link to={`${match.url}/components`}>Components</Link>
+        </li>
+        <li>
+          <Link to={`${match.url}/props-v-state`}>
+            Props v. State
+          </Link>
+        </li>
+      </ul>
+
+      {/* The Topics page has its own <Switch> with more routes
+          that build on the /topics URL path. You can think of the
+          2nd <Route> here as an "index" page for all topics, or
+          the page that is shown when no topic is selected */}
+      <Switch>
+        <Route path={`${match.path}/:topicId`}>
+          <Topic />
+        </Route>
+        <Route path={match.path}>
+          <h3>Please select a topic.</h3>
+        </Route>
+      </Switch>
+    </div>
+  );
+}
+
+function Topic() {
+  let { topicId } = useParams();
+  return <h3>Requested topic ID: {topicId}</h3>;
+}
