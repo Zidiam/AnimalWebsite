@@ -19,69 +19,35 @@ export default class CustomModal extends Component {
     };
   }
 
-  handleChange = e => {
-    let { name, value } = e.target;
-    if (e.target.type === "checkbox") {
-      value = e.target.checked;
-    }
-    const activeItem = { ...this.state.activeItem, [name]: value };
-    this.setState({ activeItem });
-  };
-
   render() {
-    const { toggle, onSave } = this.props;
+    const { toggle, onDone } = this.props;
     return (
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}> Animal Item </ModalHeader>
+        <ModalHeader toggle={toggle}> Animal Details </ModalHeader>
         <ModalBody>
           <Form>
             <FormGroup>
-              <Label for="name">Name</Label>
-              <Input
-                type="text"
-                name="name"
-                value={this.state.activeItem.name}
-                onChange={this.handleChange}
-                placeholder="Enter Animal Name"
-              />
+              <Label>Name:</Label>
+              <Label>{this.state.activeItem.name}</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="species">Species</Label>
-              <Input
-                type="text"
-                name="species"
-                value={this.state.activeItem.species}
-                onChange={this.handleChange}
-                placeholder="Enter Animal Species"
-              />
+              <Label>Species:</Label>
+              <Label>{this.state.activeItem.species}</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="age">Age</Label>
-              <Input
-                type="text"
-                name="age"
-                value={this.state.activeItem.age}
-                onChange={this.handleChange}
-                placeholder="Enter Animal Age"
-              />
+              <Label>Age:</Label>
+              <Label>{this.state.activeItem.age}</Label>
             </FormGroup>
             <FormGroup>
-              <Label for="colors">Colors</Label>
-              <Input
-                type="text"
-                name="colors"
-                value={this.state.activeItem.colors}
-                onChange={this.handleChange}
-                placeholder="Enter Animal Colors"
-              />
+              <Label>Colors:</Label>
+              <Label>{this.state.activeItem.colors}</Label>
             </FormGroup>
             <FormGroup check>
-              <Label for="extinct">
+              <Label>
                 <Input
                   type="checkbox"
                   name="extinct"
                   checked={this.state.activeItem.extinct}
-                  onChange={this.handleChange}
                 />
                 Extinct
               </Label>
@@ -89,8 +55,8 @@ export default class CustomModal extends Component {
           </Form>
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onClick={() => onSave(this.state.activeItem)}>
-            Save
+          <Button color="success" onClick={() => onDone(this.state.activeItem)}>
+            Done
           </Button>
         </ModalFooter>
       </Modal>
