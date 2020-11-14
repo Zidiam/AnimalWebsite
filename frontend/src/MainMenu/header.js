@@ -1,6 +1,7 @@
 import React from "react";
 import AnimalAdding from "../AnimalAdd/AnimalAdding";
 import AnimalsList from "../AnimalList/Animals"
+import "./components/header.css"
 import {
   BrowserRouter as Router,
   Switch,
@@ -9,26 +10,27 @@ import {
   useRouteMatch,
   useParams
 } from "react-router-dom";
-import ReactDOM from "react-dom";
 
 export default function App() {
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/animalsAdd">AnimalsAdd</Link>
-          </li>
-          <li>
-            <Link to="/animals">Animals</Link>
-          </li>
-          <li>
-            <Link to="/topics">Topics</Link>
-          </li>
-        </ul>
+        <div className = "bottomnav">
+          <div className="tab-content">
+            <a className="active" href="#home">
+              <Link to="/">Home</Link>
+            </a>
+              <a className="active" href="#home">
+              <Link to="/animalsAdd">AnimalsAdd</Link>
+            </a>
+              <a className="active" href="#home">
+              <Link to="/animals">Animals</Link>
+            </a>
+              <a className="active" href="#home">
+              <Link to="/topics">Topics</Link>
+            </a>
+          </div>
+        </div>
 
         <Switch>
           <Route path="/animalsAdd">
