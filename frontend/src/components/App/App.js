@@ -7,7 +7,6 @@ import {
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import Content from "../Content/Content";
 import Home from "../Home/Home";
 import FourOhFour from "../FourOhFour/FourOhFour";
 import AddAnimals from "../AnimalAdd/AnimalAdding.js"
