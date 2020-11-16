@@ -15,25 +15,27 @@ import AnimalsList from "../AnimalList/Animals.js"
 
 function App() {
   return (
-    <BrowserRouter>
-      <Header/>
-      <Switch>
-          <Route exact path="/addanimals">
-          <AddAnimals/>
-        </Route>
-          <Route exact path="/animalslist">
-          <AnimalsList/>
-        </Route>
-        <Route exact path="/">
-          <Home/>
-        </Route>
-        <Route>
-          <FourOhFour/>
-        </Route>
-      </Switch>
-      <hr/>
-      <Footer/>
-    </BrowserRouter>
+      <div className="bg-primary">
+        <BrowserRouter>
+          <Header/>
+              <Switch>
+                  <Route exact path="/addanimals">
+                  <AddAnimals/>
+                </Route>
+                  <Route exact path="/animalslist">
+                  <AnimalsList/>
+                </Route>
+                <Route exact path="/">
+                  <Home/>
+                </Route>
+                <Route>
+                  <FourOhFour/>
+                </Route>
+              </Switch>
+              <hr/>
+          <Footer/>
+        </BrowserRouter>
+      </div>
   );
 }
 
