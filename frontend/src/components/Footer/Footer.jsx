@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <p>Copyright Me Forever</p>
+    <p>Made by: Jason M</p>
   );
 };
 
